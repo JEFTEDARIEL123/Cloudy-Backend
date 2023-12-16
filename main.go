@@ -14,7 +14,11 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	r.ParseMultipartForm(10 << 20)
-
+	if r.Method == "OPTIONS" {
+        w.WriteHeader(http.StatusOK)
+        return
+    }
+	
 	file, handler, err := r.FormFile("file")
 	if err != nil {
 		fmt.Println("Error al obtener el archivo:", err)

@@ -42,6 +42,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Archivo recibido: %s", handler.Filename)
 }
 
+
 func listFilesHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
@@ -53,24 +54,19 @@ func listFilesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Convierte la lista de archivos a formato JSON y la envía al frontend
 	json.NewEncoder(w).Encode(fileList)
 }
 
-func listFiles(directory string) ([]string, error) {
-	var fileList []string
-
+func listFiles(directory string) ([]os.DirEntry, error) {
 	files, err := os.ReadDir(directory)
 	if err != nil {
 		return nil, err
 	}
 
-	for _, file := range files {
-		fileList = append(fileList, file.Name())
-	}
-
-	return fileList, nil
+	return files, nil
 }
+
+
 
 func main() {
 	os.Mkdir("./uploads", os.ModePerm)
